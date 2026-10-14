@@ -20,7 +20,7 @@ A simple HTTP server built using Node.js's built-in `http` module. It handles GE
 
 - `index.js` — HTTP server and request handling.
 - `sampleData.json` — Stores the initial user data.
-- `requests.http` — Contains API test requests for VS Code REST Client.
+- `api-testing.http` — Contains API test requests for VS Code REST Client.
 
 ## How to Run
 
@@ -52,7 +52,7 @@ A simple HTTP server built using Node.js's built-in `http` module. It handles GE
 
 ## Testing
 
-- Open `requests.http` in VS Code.
+- Open `api-testing.http` in VS Code.
 - Click **Send Request** above each request.
 - Verify the HTTP status code and response body.
 
