@@ -18,7 +18,7 @@
 ## Project Files
 - `server.js` - Creates the HTTP server and handles request routing.
 - `sampleData.json` - Stores the user data returned by the `/users` route.
-- `test.http` - Contains HTTP requests for testing the API using the REST Client extension in VS Code.
+- `api-testing.http` - Contains HTTP requests for testing the API using the REST Client extension in VS Code.
 
 ## How to Run
 1. Make sure Node.js is installed.
@@ -30,7 +30,7 @@
    ```
 
 4. The server will start on port `8080`.
-5. Open `test.http` in VS Code and click **Send Request** above each request to test the routes.
+5. Open `api-testing.http` in VS Code and click **Send Request** above each request to test the routes.
 
 ## Testing
 - Test the `/` route to verify the welcome response.
