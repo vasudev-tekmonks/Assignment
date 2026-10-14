@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Aman Sharma",
+    "age": 22,
+    "email": "aman@example.com",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "name": "Priya Verma",
+    "age": 21,
+    "email": "priya@example.com",
+    "role": "user"
+  },
+  {
+    "id": 3,
+    "name": "Rahul Patel",
+    "age": 24,
+    "email": "rahul@example.com",
+    "role": "user"
+  },
+  {
+    "id": 4,
+    "name": "Neha Singh",
+    "age": 23,
+    "email": "neha@example.com",
+    "role": "moderator"
+  },
+  {
+    "id": 5,
+    "name": "Arjun Mehta",
+    "age": 25,
+    "email": "arjun@example.com",
+    "role": "user"
+  }
+]

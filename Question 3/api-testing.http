@@ -1,0 +1,24 @@
+// This file is to test the APIs in VS Code using REST Client extension.
+
+### '/' route
+GET http://localhost:8080/
+Accept: application/json
+
+### '/users' route
+GET http://localhost:8080/users
+Accept: application/json
+
+### '/health' route
+GET http://localhost:8080/health
+Accept: application/json
+
+### Invalid route
+GET http://localhost:8080/invalid
+Accept: application/json
+
+### POST method for testing
+POST http://localhost:8080/records
+Content-Type: application/json
+
+### DELETE method for testing
+DELETE http://localhost:8080/records/1
