@@ -1,0 +1,60 @@
+### GET /
+GET http://localhost:8080/
+Accept: application/json
+
+### GET /users
+GET http://localhost:8080/users
+Accept: application/json
+
+### GET /health
+GET http://localhost:8080/health
+Accept: application/json
+
+### Invalid GET route
+GET http://localhost:8080/invalid
+Accept: application/json
+
+### Valid POST /users
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "name": "Vasudev",
+    "age": 21
+}
+
+### Invalid content type
+POST http://localhost:8080/users
+Content-Type: text/plain
+
+Vasudev
+
+### Invalid age
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "name": "Vasudev",
+    "age": "Ten"
+}
+
+### Invalid JSON
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "name": "Vasudev",
+    "age":
+}
+
+### Unknown POST route
+POST http://localhost:8080/invalid
+Content-Type: application/json
+
+{
+    "name": "Vasudev",
+    "age": 21
+}
+
+### DELETE method
+DELETE http://localhost:8080/records/1
