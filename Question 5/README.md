@@ -25,36 +25,6 @@ A REST API built using Node.js's built-in HTTP module to perform CRUD (Create, R
 - **utils/checkContentType.js** — Validates the request's Content-Type header.
 - **utils/validateBody.js** — Parses and validates user data received in POST requests.
 
-## Getting Started
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone <your-repository-url>
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd <project-directory>
-   ```
-
-3. Start the server:
-
-   ```bash
-   node server.js
-   ```
-
-4. The server will start on port `8080`.
-
-   ```text
-   Server is listening on port 8080
-   ```
-
-No external npm packages are required by the files provided.
-
 ## API Endpoints
 
 Base URL: `http://localhost:8080`
