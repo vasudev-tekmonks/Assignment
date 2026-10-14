@@ -1,0 +1,80 @@
+@baseUrl = http://localhost:8080
+@userId = b8033a78-6a42-45b3-832a-7f5c28e53462
+
+### GET /health
+GET {{baseUrl}}/health
+Accept: application/json
+
+### GET /users
+GET {{baseUrl}}/users
+Accept: application/json
+
+### GET /users/:id
+GET {{baseUrl}}/users/{{userId}}
+Accept: application/json
+
+### POST /users
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "name": "Aryan",
+    "age": 21
+}
+
+### PATCH /users/:id
+PATCH {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+
+{
+    "name": "Ansh"
+}
+
+### DELETE /users/:id
+DELETE {{baseUrl}}/users/{{userId}}
+Accept: application/json
+
+
+### INVALID TEST CASES
+
+### GET /users with invalid ID format
+GET {{baseUrl}}/users/123
+Accept: application/json
+
+### GET /users with a valid UUID format but nonexistent ID
+GET {{baseUrl}}/users/00000000-0000-4000-8000-000000000000
+Accept: application/json
+
+### POST /users with missing Content-Type
+POST {{baseUrl}}/users
+
+{
+    "name": "Rohan",
+    "age": 22
+}
+
+### POST /users with invalid JSON
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "name": "Rohan",
+    "age":
+}
+
+### POST /users with invalid field values
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "name": "",
+    "age": -5
+}
+
+### GET unknown route
+GET {{baseUrl}}/unknown
+Accept: application/json
+
+### Use unsupported method
+PUT {{baseUrl}}/users
+Content-Type: application/json
