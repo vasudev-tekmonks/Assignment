@@ -1,0 +1,181 @@
+@baseUrl = http://localhost:8080
+@userId = b8033a78-6a42-45b3-832a-7f5c28e53462
+@nonexistentId = 00000000-0000-4000-8000-000000000000
+
+# Replace these with actual tokens obtained from the login endpoint.
+@userToken = PASTE_USER_TOKEN_HERE
+@adminToken = PASTE_ADMIN_TOKEN_HERE
+@invalidToken = invalid.token.value
+
+### GET /health (public)
+GET {{baseUrl}}/health
+Accept: application/json
+
+### POST /users/login (user login)
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "id": "{{userId}}",
+    "password": "1234"
+}
+
+### POST /users/login (admin login)
+# Replace the ID and password with your actual admin credentials.
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "id": "YOUR_ADMIN_UUID",
+    "password": "YOUR_ADMIN_PASSWORD"
+}
+
+### GET /users (no token - expect 401)
+GET {{baseUrl}}/users
+Accept: application/json
+
+### GET /users (invalid token - expect 401)
+GET {{baseUrl}}/users
+Authorization: Bearer {{invalidToken}}
+Accept: application/json
+
+### GET /users (valid user token - expect 200)
+GET {{baseUrl}}/users
+Authorization: Bearer {{userToken}}
+Accept: application/json
+
+### GET /users/:id (valid user token - expect 200 or 404)
+GET {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{userToken}}
+Accept: application/json
+
+### GET /users/:id (invalid UUID - expect 400)
+GET {{baseUrl}}/users/123
+Authorization: Bearer {{userToken}}
+Accept: application/json
+
+### GET /users/:id (nonexistent UUID - expect 404)
+GET {{baseUrl}}/users/{{nonexistentId}}
+Authorization: Bearer {{adminToken}}
+Accept: application/json
+
+### POST /users/signup (admin token - expect 201)
+POST {{baseUrl}}/users/signup
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "Danny",
+    "password": "1234"
+}
+
+### POST /users/signup (user token - expect 403)
+POST {{baseUrl}}/users/signup
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+    "name": "Rohan",
+    "password": "1234"
+}
+
+### POST /users/signup (missing Content-Type - expect 415)
+POST {{baseUrl}}/users/signup
+Authorization: Bearer {{adminToken}}
+
+{
+    "name": "Rohan",
+    "password": "1234"
+}
+
+### PATCH /users/:id (admin token - expect 200)
+PATCH {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "Ansh"
+}
+
+### PATCH /users/:id (user token - expect 403)
+PATCH {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+    "name": "Unauthorized Change"
+}
+
+### DELETE /users/:id (user token - expect 403)
+DELETE {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{userToken}}
+Accept: application/json
+
+### DELETE /users/:id (admin token)
+# Run only after the other tests because this permanently deletes the user.
+DELETE {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{adminToken}}
+Accept: application/json
+
+### LOGIN: incorrect password (expect 401)
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "id": "{{userId}}",
+    "password": "wrong-password"
+}
+
+### LOGIN: nonexistent user (expect 401)
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "id": "{{nonexistentId}}",
+    "password": "1234"
+}
+
+### LOGIN: invalid UUID (expect 400)
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "id": "not-a-uuid",
+    "password": "1234"
+}
+
+### LOGIN: malformed JSON (expect 400)
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "id":
+}
+
+### LOGIN: missing password (expect 400)
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "id": "{{userId}}"
+}
+
+### Protected route: malformed Authorization header (expect 401)
+GET {{baseUrl}}/users
+Authorization: Basic {{userToken}}
+Accept: application/json
+
+### Protected route: expired token (expect 401)
+# Replace with a genuinely expired JWT signed using your test secret.
+GET {{baseUrl}}/users
+Authorization: Bearer PASTE_EXPIRED_TOKEN_HERE
+Accept: application/json
+
+### Unsupported method (expect 405)
+PUT {{baseUrl}}/users
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### Unknown route (expect 404)
+GET {{baseUrl}}/unknown
+Accept: application/json
