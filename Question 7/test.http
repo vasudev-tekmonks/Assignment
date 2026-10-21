@@ -1,0 +1,62 @@
+### Login with valid credentials
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "vasudev",
+  "password": "password123"
+}
+
+### Login with invalid credentials
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "vasudev",
+  "password": "wrongpassword"
+}
+
+### Login with invalid JSON
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username"; "vasudev",
+}
+
+### Access profile without logging in
+GET http://localhost:8080/profile
+
+### Login first to receive a session cookie
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "vasudev",
+  "password": "password123"
+}
+
+### Access profile with a session cookie
+GET http://localhost:8080/profile
+Cookie: sid=PASTE_SESSION_ID_HERE
+
+### Login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "vasudev",
+  "password": "password123"
+}
+
+### Access protected profile
+GET http://localhost:8080/profile
+Cookie: sid=PASTE_SESSION_ID_HERE
+
+### Logout
+POST http://localhost:8080/logout
+Cookie: sid=PASTE_SESSION_ID_HERE
+
+### Try accessing profile after logout
+GET http://localhost:8080/profile
+Cookie: sid=PASTE_SESSION_ID_HERE
