@@ -1,0 +1,2 @@
+### Test the clustering
+GET http://localhost:8080
