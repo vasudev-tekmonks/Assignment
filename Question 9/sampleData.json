@@ -1,0 +1,32 @@
+[
+    {
+        "id": "b1d5642c-fa9e-499e-b80b-d14318892ffc",
+        "name": "Aman Sharma",
+        "age": 22
+    },
+    {
+        "id": "6358dce4-a070-4cd4-9e29-1b6e35427e2a",
+        "name": "Ansh",
+        "age": 21
+    },
+    {
+        "id": "b8033a78-6a42-45b3-832a-7f5c28e53462",
+        "name": "Ansh",
+        "age": 24
+    },
+    {
+        "id": "fd050386-a2f5-49a8-a48e-c699035eedf6",
+        "name": "Neha Singh",
+        "age": 23
+    },
+    {
+        "id": "875ce244-7ccc-4872-8cab-6c9976b716ba",
+        "name": "Arjun Mehta",
+        "age": 25
+    },
+    {
+        "id": "79a13ce5-ac6b-41f4-bf8f-35d62ef01b9e",
+        "name": "Aryan",
+        "age": 21
+    }
+]

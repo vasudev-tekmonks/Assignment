@@ -1,0 +1,50 @@
+@baseUrl = http://localhost
+
+
+### TEST 1: Serve the default static page through Nginx
+GET {{baseUrl}}/
+Accept: text/html
+
+### TEST 2: Serve index.html directly through Nginx
+GET {{baseUrl}}/index.html
+Accept: text/html
+
+### TEST 3: Return 404 for a missing static file
+GET {{baseUrl}}/missing.html
+
+### TEST 4: Forward the health API request to Node.js
+GET {{baseUrl}}/health
+Accept: application/json
+
+### TEST 5: Forward the users API request to Node.js
+GET {{baseUrl}}/users
+Accept: application/json
+
+### TEST 6: Forward a request for a specific user
+GET {{baseUrl}}/users/b8033a78-6a42-45b3-832a-7f5c28e53462
+Accept: application/json
+
+### TEST 7: Forward a POST request to Node.js
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "name": "Nginx Test User",
+    "age": 21
+}
+
+### TEST 8: Forward a PATCH request to Node.js
+PATCH {{baseUrl}}/users/b8033a78-6a42-45b3-832a-7f5c28e53462
+Content-Type: application/json
+
+{
+    "name": "Updated Nginx Test User"
+}
+
+### TEST 9: Forward a DELETE request to Node.js
+DELETE {{baseUrl}}/users/b8033a78-6a42-45b3-832a-7f5c28e53462
+Accept: application/json
+
+### TEST 10: Forward an unsupported API route to Node.js
+GET {{baseUrl}}/unknown
+Accept: application/json
