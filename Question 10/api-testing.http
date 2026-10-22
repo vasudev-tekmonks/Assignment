@@ -1,0 +1,144 @@
+@baseUrl = http://localhost:8080
+@adminId = 57e8a943-cd4a-476e-ad09-644cdbb37612
+@userId = 865c54aa-f02b-4ea8-a7b9-07d31e65f792
+@nonexistentId = 00000000-0000-4000-8000-000000000000
+
+# Pre-generated valid tokens
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1N2U4YTk0My1jZDRhLTQ3NmUtYWQwOS02NDRjZGJiMzc2MTIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3OTI2NTYyNjEsImV4cCI6MTc5NTI0ODI2MX0.b8Dqlp3DnhMsH-74qUSKdh8mfdMDcyPr9OGW7_En4UE
+@userToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4NjVjNTRhYS1mMDJiLTRlYTgtYTdiOS0wN2QzMWU2NWY3OTIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc5MjY1NjI2MSwiZXhwIjoxNzk1MjQ4MjYxfQ.8T0UAPopZfLWNsUpvL-lWlD8s71F5dtf43F8TUfocXA
+
+### =================================================================
+### 1. REQ: Logging, Health & Correlation (X-Request-Id)
+### =================================================================
+
+### 1.1 Health check - verify 200 OK and X-Request-Id header in response
+GET {{baseUrl}}/health
+
+### =================================================================
+### 2. REQ: Authentication & Authorization Failures (401, 403)
+### =================================================================
+
+### 2.1 Missing authorization token - expect 401 Unauthorized
+GET {{baseUrl}}/users
+
+### 2.2 Invalid authorization token - expect 401 Unauthorized
+GET {{baseUrl}}/users
+Authorization: Bearer invalid.token.value
+
+### 2.3 Login with incorrect password - expect 401 Unauthorized
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "id": "{{adminId}}",
+    "password": "wrong-password"
+}
+
+### 2.4 User attempting admin action (Role check) - expect 403 Forbidden
+PATCH {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+    "name": "Unauthorized Update"
+}
+
+### =================================================================
+### 3. REQ: Header & Parameter Validation (400, 415)
+### =================================================================
+
+### 3.1 Unsupported Media Type (non-JSON Content-Type) - expect 415
+POST {{baseUrl}}/users/login
+Content-Type: text/plain
+
+invalid-body
+
+### 3.2 Invalid UUID parameter format - expect 400 Bad Request
+GET {{baseUrl}}/users/123-not-a-valid-uuid
+Authorization: Bearer {{adminToken}}
+
+### 3.3 Missing required field 'id' on login - expect 400 Bad Request
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "password": "1234"
+}
+
+### 3.4 Missing required field 'password' on login - expect 400 Bad Request
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "id": "{{adminId}}"
+}
+
+### 3.5 PATCH with empty body - expect 400 Bad Request
+PATCH {{baseUrl}}/users/{{adminId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{}
+
+### 3.6 PATCH with disallowed field (attempting to alter role) - expect 400 Bad Request
+PATCH {{baseUrl}}/users/{{adminId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "role": "super-admin"
+}
+
+### 3.7 PATCH with invalid field data (blank name) - expect 400 Bad Request
+PATCH {{baseUrl}}/users/{{adminId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "   "
+}
+
+### =================================================================
+### 4. REQ: Malformed Requests (400 Bad Request)
+### =================================================================
+
+### 4.1 Malformed JSON body - expect 400 Bad Request
+POST {{baseUrl}}/users/login
+Content-Type: application/json
+
+{
+    "id":
+}
+
+### =================================================================
+### 5. REQ: Missing Resources (404 Not Found)
+### =================================================================
+
+### 5.1 Nonexistent user UUID - expect 404 Not Found
+GET {{baseUrl}}/users/{{nonexistentId}}
+Authorization: Bearer {{adminToken}}
+
+### 5.2 Unknown route URL - expect 404 Not Found
+GET {{baseUrl}}/unknown-route
+
+### =================================================================
+### 6. REQ: Unsupported HTTP Methods (405 Method Not Allowed)
+### =================================================================
+
+### 6.1 Unsupported method on /users collection (PUT) - expect 405 (Allow: GET)
+PUT {{baseUrl}}/users
+Authorization: Bearer {{adminToken}}
+
+### 6.2 Unsupported method on auth route /users/login (GET) - expect 405 (Allow: POST)
+GET {{baseUrl}}/users/login
+
+### 6.3 Unsupported method on health route (POST) - expect 405 (Allow: GET)
+POST {{baseUrl}}/health
+
+### =================================================================
+### 7. REQ: Sensitive Information Protection (No Password Leak)
+### =================================================================
+
+### 7.1 Verify user response strips password hash - expect 200 with safe fields only
+GET {{baseUrl}}/users/{{adminId}}
+Authorization: Bearer {{adminToken}}
