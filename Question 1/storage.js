@@ -1,4 +1,5 @@
-const fs = require("fs/promises");      // Import the file system module
+const fs = require("fs/promises");
+const crypto = require("crypto");      // Import the file system module
 const path = require("path");       // Import the path module
 const filePath = path.join(__dirname, "records.json");      // Build the path to records.json in the cd
 
@@ -28,17 +29,7 @@ async function getRecords() {
 
 async function createRecord(record) {
     const records = await getRecords();
-    let id = 1;     // Start with ID 1 when generating a new record ID
-
-    if (records.length > 0) {       // Check whether any records already exist
-        const ids = records.map((item) => item.id);
-
-        for (let x of ids) {
-            id = Math.max(id, x);       //Find the maximin id
-        } 
-
-        id++;       // Increment the largest ID to generate the next ID
-    }
+    const id = crypto.randomUUID();     // Start with ID 1 when generating a new record ID
 
     const newRecord = { ...record, id };
     records.push(newRecord);

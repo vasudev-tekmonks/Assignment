@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const filePath = path.join(__dirname, "sampleData.txt");
 
-//Pallback
+//Callback
 
 fs.readFile(filePath, "utf-8", (err, data) => {
     if (err) {

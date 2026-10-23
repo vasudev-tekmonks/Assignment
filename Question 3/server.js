@@ -9,11 +9,11 @@ const server = http.createServer((req, res) => {        // This method is used t
     const { method, url } = req;        // Method and url route is destructured from the request
 
     if (method !== "GET") {     // Route if the request method is not GET
-        res.statusCode = 405;       //Code 405 for Method not allowed
+        res.statusCode = 404;       //Code 405 for Method not allowed
         res.setHeader("Content-Type", "application/json");      // Setting header value for Content-Type
         res.end(        // Method used to send response to the client
             JSON.stringify({        // method used to convert js value to JSON string
-                status: "Method Not Allowed!",
+                status: "Not Found!",
             }),
         );
         return;

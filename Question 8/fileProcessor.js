@@ -1,10 +1,11 @@
 const fs = require("fs");
+const path = require("path");
 
 // Create a readable stream to read the input file in chunks.
-const readable = fs.createReadStream("input.txt");
+const readable = fs.createReadStream(path.join(__dirname, "input.txt"));
 
 // Create a writable stream to write the processed data to the output file.
-const writable = fs.createWriteStream("output.txt");
+const writable = fs.createWriteStream(path.join(__dirname, "output.txt"));
 
 // Handle errors that occur while reading the input file.
 readable.on("error", (err) => {

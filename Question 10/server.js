@@ -281,7 +281,7 @@ const server = http.createServer(async (req, res) => {
         }
 
         if (isUsersRoute || isUserIdRoute) {
-            res.setHeader("Allow", isUsersRoute ? "GET" : "GET, PATCH, DELETE");
+            res.setHeader("Allow", isUsersRoute ? "GET, POST" : "GET, PATCH, DELETE");
 
             return sendError(
                 res,

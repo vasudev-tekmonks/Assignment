@@ -136,8 +136,6 @@ const server = http.createServer((req, res) => {
             .map((cookie) => cookie.trim())
             .find((cookie) => cookie.startsWith("sid="));
 
-        console.log("Incoming Cookie header:", req.headers.cookie);
-
         if (!sessionCookie) {
             return sendJson(res, 401, {
                 error: "Authentication required",
