@@ -29,7 +29,7 @@ async function getRecords() {
 
 async function createRecord(record) {
     const records = await getRecords();
-    const id = crypto.randomUUID();     // Start with ID 1 when generating a new record ID
+    const id = crypto.randomUUID();
 
     const newRecord = { ...record, id };
     records.push(newRecord);
