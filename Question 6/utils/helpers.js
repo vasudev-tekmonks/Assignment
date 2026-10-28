@@ -20,9 +20,16 @@ function publicUser(record) {
     return safeRecord;
 }
 
+function sendJson(res, statusCode, data) {
+    res.statusCode = statusCode;
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify(data));
+}
+
 module.exports = {
     isValidId,
     isNotFoundError,
     isInvalidDataError,
-    publicUser
+    publicUser,
+    sendJson
 };

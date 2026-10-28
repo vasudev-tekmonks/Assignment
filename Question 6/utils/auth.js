@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
-const sendJson = require("../utils/sendJson");
+const { sendJson } = require("../utils/helpers");
 
-function authenticateToken(req, res) {
-    const header = req.headers.authorization;       // Auth. part is extractred from the header
+function validateToken(req, res) {
+    const header = req.headers.authorization; // Auth. part is extractred from the header
 
     // Check whether the Authorization header exists.
     if (!header) {
@@ -17,11 +17,7 @@ function authenticateToken(req, res) {
     const [scheme, token, ...extra] = header.split(" ");
 
     // Validate the Bearer scheme and token format.
-    if (
-        scheme !== "Bearer" ||
-        !token ||
-        extra.length > 0
-    ) {
+    if (scheme !== "Bearer" || !token || extra.length > 0) {
         sendJson(res, 401, {
             status: "Unauthorized",
             message: "Invalid authorization header format.",
@@ -31,7 +27,10 @@ function authenticateToken(req, res) {
 
     // Verify the token's signature and expiration.
     try {
-        const verifiedUserCredentials = jwt.verify(token, process.env.JWT_SECRET);
+        const verifiedUserCredentials = jwt.verify(
+            token,
+            process.env.JWT_SECRET,
+        );
         return verifiedUserCredentials;
     } catch (err) {
         if (err.name === "TokenExpiredError") {
@@ -50,4 +49,17 @@ function authenticateToken(req, res) {
     }
 }
 
-module.exports = authenticateToken;
+function authorizeRole(req, res, decoded, allowedRoles) {
+    if (!allowedRoles.includes(decoded.role)) {
+        sendJson(res, 403, {
+            status: "Forbidden",
+            message: "Role not allowed to access this route.",
+        });
+
+        return false;
+    }
+
+    return true;
+}
+
+module.exports = { validateToken, authorizeRole };

@@ -10,18 +10,19 @@ const {
 require("dotenv").config();
 
 // Import helper functions
-const validateContentType = require("./utils/checkContentType.js");
-const validateBodyForSignup = require("./utils/validateBodyForSignup.js");
-const validateBodyForLogin = require("./utils/validateBodyForLogin.js");
+const {
+    validateContentType,
+    validateBodyForSignup,
+    validateBodyForLogin,
+} = require("./utils/validate.js");
 const {
     isValidId,
     isNotFoundError,
     isInvalidDataError,
     publicUser,
+    sendJson,
 } = require("./utils/helpers.js");
-const sendJson = require("./utils/sendJson.js");
-const validateToken = require("./middlewares/authenticateToken.js");
-const authorizeRole = require("./middlewares/authorizeRole.js");
+const { validateToken, authorizeRole } = require("./utils/auth.js");
 
 const http = require("http");
 const PORT = 8080;
